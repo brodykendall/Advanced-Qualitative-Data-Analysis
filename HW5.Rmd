@@ -1,0 +1,98 @@
+---
+title: "HW5"
+author: "Brody Kendall"
+date: "11/17/2021"
+output: pdf_document
+header-includes:
+  - \usepackage{pdfpages}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executive Summary
+
+Our objective in this report is to analyze the data on Shaquille O'Neal's free throw shooting in the 2000 NBA Playoffs for the Los Angeles Lakers. Specifically want to examine whether his overall shooting percentage is different than 50%, and whether his shooting percentage varies on a game-by-game basis. We fit multiple models with various assumptions to test these claims. Our results are that there is insufficient evidence to conclude that O'Neal's overall free throw shooting percentage in the context of the 2000 NBA Playoffs was different than 50%, but that there is sufficient evidence to conclude that his free throw shooting percentage varied from game to game. 
+
+<br/>
+
+## Introduction
+
+Commentators claim that O'Neals's free-throw shooting varied dramatically from game to game. We want to test whether this claim is statistically valid. That is, we want to test if there is a relationship between the probability of O'Neal making a free throw and the game he is playing. In other words, we want to test whether O'Neal's chances of making a free throw are independent of the game he is playing in. We can perform this test using the hypotheses $H_0$: making a free throw and game are independent vs $H_A$: $H_0$ is not true. We are also interested in the rate at which O'Neal successfully makes free throws. To do so, we will test $H_0$: his success rate = 0.5 vs $H_A$: $H_0$ is not true.
+
+The data come from the individual basketball games that the Los Angeles Lakers played during the 2000 NBA playoffs. Specifically, they measure both the number of attempted free throws and the number of successful free throws for one specific player, Shaquille O'Neal.
+
+We have data for 23 games. A quick check at basketball-reference.com shows that we have the data for every game that the Lakers played over this time period, and that O'Neal played in every game that his team did. He both attempted and scored at least one free-throw in each of these games. Overall, he attempted an average of 12.87 free throws per game, successfully scoring an average of 5.87 per game. His average free throw percentage was 44% (weighted by game). The standard deviation of free throws attempted per game is 7.49, the standard deviation of free throws scored per game is 4.06, and the standard deviation of free-throw percentage per game is 21%. 
+
+Let $F$ be a free throw indicator variable. That is, $F=1$ corresponds to a made free throw and $F=0$ corresponds to a missed free throw. Let $G$ represent the game number. That is, $G=i$ represents the ith game that the Lakers played in the 2000 NBA Playoffs. So our hypotheses for the test of independence can be rewritten in terms of these variables as $H_0: F$ and $G$ are independent $\iff P(F=1|G=1) = P(F=1|G=2) = ... = P(F=1|G=23)$ vs $H_A:$ $H_0$ is not true.
+
+For our specific data, let $Z_i$ and $n_i$ represent the number of made free throws and the number of attempted free throws during game $i$, respectively.
+
+We initially assume that the data come from independent draws of binomial distribution. That is,
+
+\[z_i \leftarrow Z_i\text{ ~ binomial}(n_i, \mu_i)\text{ for }i=1,...,23\]
+
+or,
+
+\[y_i \leftarrow Y_i = \frac{Z_i}{n_i}\text{ ~ }\frac{\text{binomial}(n_i, \mu_i)}{n_i}\text{ for }i=1,...,23\]
+
+where $Y_i$ represents O'Neal's free throw percentage in game $i$.
+
+We will try two models, each with a different link functions
+
+**Model 1** will use the identity link function: 
+
+\[g(\mu_i) = \mu_i = \alpha\]
+
+**Model 2** will use the logit link function:
+
+\[g(\mu_i) = log(\frac{\mu_i}{1-\mu_i}) = \alpha\]
+
+We expect for model 2 to be more intuitive as there are no restrictions on $\mu_i$, while in model 1, we restrict $0 \leq \mu_i \leq 1$. We are also justified in these model assumptions as $n^*$ which represents the total number of free throws attempted = 135 + 161 = 296 >> $n$ which represents the total number of games = 23.
+
+<br/>
+
+## Results and Conclusion
+
+Our initial estimate for Model 1 is 
+
+\[g(\hat\mu_i) = \hat\mu_i = 0.4561\]
+
+This estimate has a standard error of 0.0289 yielding a 95% confidence interval of (0.3993, 0.5128). This means that under these model assumptions, we are 95% confident that O'Neal's true probability of scoring a free throw in any game under the context of the 2000 NBA Playoffs is within this interval. The Wald $\chi^2$ test for significance in this model tests whether $\mu_i = \alpha = 0$, yielding a p-value of <0.0001. However, this test does not make sense as there is a restriction on $\mu_i$ under our model assumptions that $\mu_i > 0$.
+
+Our initial estimate for Model 2 is
+
+\[g(\hat\mu_i) = logit(\hat\mu_i) = log(\frac{\hat\mu_i}{1-\hat\mu_i}) = -0.1761\]
+
+This estimate has a standard error of 0.1167 yielding a 95% confidence interval of (-0.4049, 0.0526). Converting back to the original scale by applying the inverse link function, we get the same results as Model 1 yielding the same confidence interval and the same interpretation. However, the $\chi^2$ test for significance in this model makes more sense. In this case, we are testing whether $logit(\mu_i) = \alpha = 0$ or equivalently, whether $\mu_i = 0.5$. This yields a p-value of 0.1312 > 0.05, so we fail to reject $H_0$ and conclude that there is insufficient evidence that O'Neal's true probability of scoring a free throw under this context is different than 0.5.
+
+However under both of these models, we notice that both the Pearson $X^2$ value and the deviance value are relatively high. For these models to fit well, we expect $\frac{X^2}{df} \approx \frac{\text{deviance}}{df} \approx 1$. But the values we get for these ratios are 1.614 and 1.819, respectively. Performing $\chi^2$ goodness of fit tests with 22 degrees of freedom result in p-values of 0.0342 and 0.0108, respectively. Since both of these values are < 0.05, we conclude that there is strong evidence of overdispersion. In response, we elect to re-fit the models to account for this overdispersion via quasi-likelihood estimation.
+
+Our estimate for Model 1 is still
+
+\[g(\hat\mu_i) = \hat\mu_i = 0.4561\]
+
+However, the standard error of 0.0368 and 95% confidence interval of (0.384, 0.528) are different. The standard error is higher than before accounting for overdispersion, yielding a wider confidence interval. Again, this model is limited by the restrictions on $\hat\mu_i$, although it is likely more accurate than its previous iteration.
+
+Our estimate for Model 2 is still
+
+\[g(\hat\mu_i) = logit(\hat\mu_i) = log(\frac{\hat\mu_i}{1-\hat\mu_i}) = -0.1761\]
+
+Again the standard error of 0.1483 and 95% confidence interval of (-0.467, 0.115) are higher and wider than before. Under this new model, our Wald $\chi^2$ test for significance ($H_0: \mu_i = 0.5$ yields a p-value of 0.2349, even greater than before we accounted for overdispersion, so we again fail to reject $H_0$ and conclude that there is insufficient evidence that O'Neal's true probability of scoring a free throw under this context is different than 0.5.
+
+Another (and arguably more relevant) result of rejecting the goodness of fit test for the models before accounting for overdispersion based on the Pearson $\chi^2$ test statistic is that this test is equivalent to a test for independence in the 23 $\times$ 2 table of counts. That is, we also reject $H_0:$ making a free throw and game are independent, and conclude that there is sufficient evidence that O'Neals's free-throw shooting varied from game to game. That is, there is statistical evidence that backs the commentators claim that "O'Neals's free-throw shooting varied dramatically from game to game."
+
+\newpage
+
+## References
+
+Sports Reference LLC "Shaquille O'Neal 1999-00 Game Log." Basketball-Reference.com - Basketball Statistics and History. https://www.basketball-reference.com/. 11/17/21
+
+\newpage
+
+## Appendix
+
+The results from the SAS file used to perform the analysis are on the following pages.
+
+\includepdf[pages={-}]{Results_ HW5.pdf}

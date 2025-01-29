@@ -1,0 +1,71 @@
+\documentclass{article}
+\title{HW3}
+\author{Brody Kendall}
+\date{10/21/2021}
+\usepackage{multirow}
+\usepackage{centernot}
+\begin{document}
+\maketitle
+
+1. \textbf{2.3}\\
+
+The difference of proportions is $\frac{\pi_{11}}{\pi_{1+}} - \frac{\pi_{21}}{\pi_{2+}} = \frac{1601}{1601+162,527} - \frac{510}{510 + 412,368} = 0.008519$ so the sample proportion of accidents resulting in fatal injuries given they were not wearing a seat belt is slightly greater than that proportion given they \textit{were} wearing a seat belt.
+
+The relative risk is $\frac{\pi_{11}/\pi_{1+}}{\pi_{21}/\pi_{2+}} = \frac{1601/(1601+162,527)}{510/(510 + 412,368)} = 7.89697$ so the proportion of accidents resulting in fatal accidents of those not wearing a seat belt was 7.897 times the proportion of accidents resulting in fatal accidents of those wearing a seat belt.
+
+The odds ratio is $\frac{\pi_{11}\pi_{22}}{\pi_{12}\pi_{21}} = \frac{1601(412,368)}{162,527(510)} = 7.96490$ so the odds of a fatal injury for those not wearing a seat belt was 7.965 times the odds for those wearing a seat belt.
+
+The relative risk and odds ratio are approximately equal because the number of fatal injuries is very small compared to nonfatal injuries for both "none" and "seat belt"
+\\
+
+2. \textbf{2.8}\\
+
+a. "Odds" has a different definition than "probability" despite them having the same colloquial meaning. They should say the \textit{odds} of survival for females was 11.4 times the odds for males.
+
+b. We know that the odds of survival for females was 2.9, so we can calculate the proportion of females that survived: $proportion(female) = \frac{odds(female)}{odds(female)+1} = \frac{2.9}{3.9} = 0.744$. We also know that the odds ratio between gender and survival was 11.4. From this, we can calculate the odds of survival for males: $OR = \frac{odds(female)}{odds(male)}$ so $11.4 = \frac{2.9}{odds(male)}$ so the odds of survival for males was $2.9/11.4 = 0.254$. And now we can calculate the proportion that survived: $proportion(male) = \frac{odds(male)}{odds(male)+1} = \frac{0.254}{1.254} = 0.203$
+\\
+
+3. \textbf{2.12}\\
+
+The conditional odds ratio for department A is $\theta_{AG(A)} = \frac{\pi_{11A}\pi_{22A}}{\pi_{12A}\pi_{21A}} = \frac{512(19)}{313(89)} = 0.3492$
+
+The conditional odds ratio for department B is $\theta_{AG(B)} = \frac{\pi_{11B}\pi_{22B}}{\pi_{12B}\pi_{21B}} = \frac{353(8)}{207(17)} = 0.8025$
+
+The conditional odds ratio for department C is $\theta_{AG(C)} = \frac{\pi_{11C}\pi_{22C}}{\pi_{12C}\pi_{21C}} = \frac{120(391)}{205(202)} = 1.1331$
+
+The conditional odds ratio for department D is $\theta_{AG(D)} = \frac{\pi_{11D}\pi_{22D}}{\pi_{12D}\pi_{21D}} = \frac{138(244)}{279(131)} = 0.9213$
+
+The conditional odds ratio for department E is $\theta_{AG(E)} = \frac{\pi_{11E}\pi_{22E}}{\pi_{12E}\pi_{21E}} = \frac{53(299)}{138(94)} = 1.2216$
+
+The conditional odds ratio for department F is $\theta_{AG(F)} = \frac{\pi_{11F}\pi_{22F}}{\pi_{12F}\pi_{21F}} = \frac{22(317)}{351(24)} = 0.8279$
+
+The marginal odds ratio is $\theta_{AG} = \frac{\pi_{11+}\pi_{22+}}{\pi_{12+}\pi_{21+}} = \frac{1198(1278)}{1493(557)} = 1.8411$
+\\
+
+All of the conditional odds ratios are relatively close to 1, with the exception of that for department A which is much smaller. The marginal odds ratio is noticeably larger than all of the conditional odds ratios which must mean that there are associations between Department and Admitted as well as between Department and Gender. These associations must account for the difference between the conditional odds ratios and the marginal odds ratio.
+\\
+
+4. \textbf{2.19}\\
+
+Using SAS, we find that $\gamma = 0.360$. That is, of the untied pairs, the proportion of concordant pairs is 0.360 higher than the proportion of discordant pairs. Since $\gamma \neq 0$, we can say that the variables are not independent.
+\\
+
+5. \textbf{2.39}\\
+
+Given independence, $E[V(Y|X)] = \Sigma_i \pi_{i+}V(Y|i) = \Sigma_i \pi_{i+}(1-max_j(\pi_{j|i}))$
+
+$= \Sigma_i \pi_{i+} - \Sigma_i \pi_{i+}(\pi_{1|i}) = 1 - max_j(\pi_{j+})$, so $V(Y) - E[V(Y|X)] = 0$ 
+
+and therefore independence $\Rightarrow \lambda = 0$.
+
+However, if the $max_j(\pi_{j|i})$ occur at the same j for every i (without loss of generality assume this j=1) which does not require independence, then again 
+
+$E[V(Y|X)] = \Sigma_i \pi_{i+}V(Y|i) = \Sigma_i \pi_{i+}(1-max_j(\pi_{j|i})) = \Sigma_i \pi_{i+} - \Sigma_i \pi_{i+}(\pi_{1|i})$
+
+$= 1 - max_j(\pi_{j+})$, so $V(Y) - E[V(Y|X)] = 0$ and therefore $\lambda = 0 \centernot\Rightarrow$ independence.
+
+\end{document}
+
+
+
+
